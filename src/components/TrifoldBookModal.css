@@ -1,0 +1,403 @@
+/* ==========================================================================
+   TRIFOLD BOOK MODAL - MODERN GLASSMORPHISM DESIGN
+   ========================================================================== */
+
+.trifold-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background-color: rgba(2, 6, 23, 0.75); /* var(--bg-primary) with opacity */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  overflow: hidden;
+}
+
+.trifold-scene {
+  perspective: 2500px;
+  width: 100%;
+  max-width: 1440px;
+  aspect-ratio: 2 / 1;
+  max-height: 92vh;
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glass Panels */
+.trifold-center,
+.trifold-left,
+.trifold-right {
+  position: absolute;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+[data-theme="light"] .trifold-center,
+[data-theme="light"] .trifold-left,
+[data-theme="light"] .trifold-right {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.trifold-center {
+  width: 33.33%;
+  z-index: 10;
+  transform: scale(0.92) rotateX(0deg) rotateY(0deg);
+  /* The center cover doesn't need to be fully transparent glass if it holds an image, but it looks good for edges */
+  background: rgba(2, 6, 23, 0.85); 
+}
+
+.trifold-left {
+  top: 0;
+  width: 100%;
+  left: -100%;
+  transform-origin: right center;
+  transform: rotateY(-175deg);
+  z-index: 2;
+}
+
+.trifold-right {
+  top: 0;
+  width: 100%;
+  right: -100%;
+  transform-origin: left center;
+  transform: rotateY(175deg);
+  z-index: 2;
+}
+
+/* Open State */
+.trifold-scene.open .trifold-center {
+  transform: scale(1) rotateX(2deg) rotateY(0deg);
+}
+
+.trifold-scene.open .trifold-left {
+  transform: rotateY(6deg); /* Slight inward curve */
+}
+
+.trifold-scene.open .trifold-right {
+  transform: rotateY(-6deg); /* Slight inward curve */
+}
+
+/* Panel Content Styling */
+.trifold-panel-content {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Modern Typography & Accents */
+.trifold-accent-block {
+  background: transparent;
+  border-bottom: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  color: var(--text-1, #f1f5f9);
+}
+
+.trifold-giant-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 80px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 0.8;
+  text-transform: uppercase;
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  bottom: -10px;
+  right: -10px;
+  text-align: right;
+}
+
+[data-theme="light"] .trifold-giant-text {
+  background: linear-gradient(135deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.01) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.trifold-giant-text-top {
+  top: 10px;
+  left: -10px;
+  right: auto;
+  bottom: auto;
+  text-align: left;
+}
+
+/* Center Panel (Cover) */
+.cover-image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: var(--bg-card, #0f172a);
+}
+
+.cover-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.cover-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(2, 6, 23, 0.95) 0%, transparent 60%, rgba(99, 102, 241, 0.1) 100%);
+  pointer-events: none;
+}
+
+.cover-text-overlay {
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+  right: 32px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.cover-text-overlay h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.cover-text-overlay p {
+  color: var(--pro-primary, #818cf8);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  font-size: 12px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+/* Scrollbars */
+.description-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.description-container::-webkit-scrollbar-thumb {
+  background: var(--border, rgba(255, 255, 255, 0.2));
+  border-radius: 10px;
+}
+
+.description-editor {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: inherit;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Right Panel (Admin / Images) */
+.image-thumbs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+  z-index: 10;
+  position: relative;
+}
+
+.thumb-wrapper {
+  position: relative;
+  aspect-ratio: 2/3;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  background: var(--bg-input, rgba(0, 0, 0, 0.2));
+}
+
+.thumb-wrapper:hover {
+  transform: translateY(-4px);
+  border-color: var(--pro-primary, #6366f1);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.25);
+}
+
+.thumb-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-thumb-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.thumb-wrapper:hover .delete-thumb-btn {
+  opacity: 1;
+}
+
+.delete-thumb-btn:hover {
+  background: #dc2626;
+  transform: scale(1.1);
+}
+
+/* Action Buttons */
+.trifold-close-btn {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  background: var(--bg-glass, rgba(255, 255, 255, 0.1));
+  color: var(--text-1, #fff);
+  border: 1px solid var(--border, rgba(255,255,255,0.1));
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100001;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.trifold-close-btn:hover {
+  background: rgba(239, 68, 68, 0.9);
+  border-color: transparent;
+  color: #fff;
+  transform: rotate(90deg) scale(1.05);
+}
+
+.trifold-save-btn {
+  position: absolute;
+  top: 32px;
+  right: 96px;
+  background: linear-gradient(135deg, var(--pro-primary, #6366f1) 0%, var(--pro-accent, #a855f7) 100%);
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 0 24px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 100001;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.trifold-save-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
+}
+
+.trifold-save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: var(--bg-elevated, #334155);
+  box-shadow: none;
+  color: var(--text-3, #94a3b8);
+}
+
+/* 3D Shadows for Creases */
+.crease-shadow-left {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.25));
+  pointer-events: none;
+  z-index: 20;
+}
+
+.crease-shadow-right {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.25));
+  pointer-events: none;
+  z-index: 20;
+}
+
+[data-theme="light"] .crease-shadow-left {
+  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.08));
+}
+[data-theme="light"] .crease-shadow-right {
+  background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.08));
+}
+
+/* Section Titles */
+.trifold-section-title {
+  color: var(--text-1, #f1f5f9);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 10;
+  letter-spacing: -0.5px;
+}
+
+.trifold-section-title::after {
+  content: '';
+  height: 2px;
+  flex: 1;
+  background: linear-gradient(to right, var(--border, rgba(255,255,255,0.1)), transparent);
+  border-radius: 2px;
+}
+
+[data-theme="light"] .trifold-section-title::after {
+  background: linear-gradient(to right, rgba(0,0,0,0.1), transparent);
+}
